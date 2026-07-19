@@ -2,7 +2,7 @@
 
 import typing
 
-import httpx
+import httpx2
 import pytest
 
 if typing.TYPE_CHECKING:
@@ -20,7 +20,7 @@ def rt_connection() -> 'rt.rest2.Rt':
     """Setup a generic connection."""
     import rt.rest2  # noqa: PLC0415
 
-    return rt.rest2.Rt(url=RT_URL, http_auth=httpx.BasicAuth(RT_USER, RT_PASSWORD), http_timeout=None)
+    return rt.rest2.Rt(url=RT_URL, http_auth=httpx2.BasicAuth(RT_USER, RT_PASSWORD), http_timeout=None)
 
 
 @pytest.fixture(scope='session')
@@ -28,4 +28,4 @@ def async_rt_connection() -> 'rt.rest2.AsyncRt':
     """Setup a generic connection."""
     import rt.rest2  # noqa: PLC0415
 
-    return rt.rest2.AsyncRt(url=RT_URL, http_auth=httpx.BasicAuth(RT_USER, RT_PASSWORD), http_timeout=None)
+    return rt.rest2.AsyncRt(url=RT_URL, http_auth=httpx2.BasicAuth(RT_USER, RT_PASSWORD), http_timeout=None)

@@ -16,7 +16,7 @@ import typing
 from typing import Literal
 from urllib.parse import urljoin
 
-import httpx
+import httpx2
 
 import rt.exceptions
 
@@ -97,7 +97,7 @@ class Rt:
         url: str,
         proxy: str | None = None,
         verify_cert: str | bool = True,
-        http_auth: httpx.Auth | None = None,
+        http_auth: httpx2.Auth | None = None,
         token: str | None = None,
         http_timeout: int | None = 20,
     ) -> None:
@@ -128,17 +128,16 @@ class Rt:
         if isinstance(verify_cert, bool):
             ssl_verify: ssl.SSLContext | bool = verify_cert
         elif isinstance(verify_cert, str):
-            # Starting with version 0.28.0 of httpx, verify should be either a bool or an SSL Context.
             ssl_verify = ssl.create_default_context(cafile=verify_cert)
         else:
             ssl_verify = True
 
-        self.session = httpx.Client(timeout=http_timeout, verify=ssl_verify, proxy=proxy, auth=http_auth)
+        self.session = httpx2.Client(timeout=http_timeout, verify=ssl_verify, proxy=proxy, auth=http_auth)
 
         if token is not None:  # pragma: no cover  # no way to add tests for this with the current docker image
             self.session.headers['Authorization'] = f'token {token}'
 
-    def __debug_response(self, response: httpx.Response) -> None:
+    def __debug_response(self, response: httpx2.Response) -> None:
         """Output debug information for a given HTTP response."""
         response.request.read()
         self.logger.debug('### %s', datetime.datetime.now(tz=datetime.timezone.utc).isoformat())
@@ -199,9 +198,9 @@ class Rt:
                 ) from exc
 
             return result
-        except httpx.ConnectError as exc:  # pragma: no cover
+        except httpx2.ConnectError as exc:  # pragma: no cover
             raise ConnectionError('Connection error', exc) from exc
-        except httpx.TransportError as exc:  # pragma: no cover
+        except httpx2.TransportError as exc:  # pragma: no cover
             raise ConnectionError('Transport error', exc) from exc
 
     def __request_put(
@@ -240,9 +239,9 @@ class Rt:
                 ) from exc
 
             return result
-        except httpx.ConnectError as exc:  # pragma: no cover
+        except httpx2.ConnectError as exc:  # pragma: no cover
             raise ConnectionError('Connection error', exc) from exc
-        except httpx.TransportError as exc:  # pragma: no cover
+        except httpx2.TransportError as exc:  # pragma: no cover
             raise ConnectionError('Transport error', exc) from exc
 
     def __request_delete(
@@ -280,9 +279,9 @@ class Rt:
                 ) from exc
 
             return result
-        except httpx.ConnectError as exc:  # pragma: no cover
+        except httpx2.ConnectError as exc:  # pragma: no cover
             raise ConnectionError('Connection error', exc) from exc
-        except httpx.TransportError as exc:  # pragma: no cover
+        except httpx2.TransportError as exc:  # pragma: no cover
             raise ConnectionError('Transport error', exc) from exc
 
     def __paged_request(
@@ -362,13 +361,13 @@ class Rt:
                     except NotFoundError:
                         break
 
-        except httpx.ConnectError as exc:  # pragma: no cover
+        except httpx2.ConnectError as exc:  # pragma: no cover
             raise ConnectionError('Connection error', exc) from exc
-        except httpx.TransportError as exc:  # pragma: no cover
+        except httpx2.TransportError as exc:  # pragma: no cover
             raise ConnectionError('Transport error', exc) from exc
 
     @staticmethod
-    def __check_response(response: httpx.Response) -> None:
+    def __check_response(response: httpx2.Response) -> None:
         """Search general errors in server response and raise exceptions when found.
 
         :param response: Response from HTTP request.
@@ -1806,7 +1805,7 @@ class AsyncRt:
         url: str,
         proxy: str | None = None,
         verify_cert: str | bool = True,
-        http_auth: httpx.Auth | None = None,
+        http_auth: httpx2.Auth | None = None,
         token: str | None = None,
         http_timeout: int | None = 20,
     ) -> None:
@@ -1837,17 +1836,16 @@ class AsyncRt:
         if isinstance(verify_cert, bool):
             ssl_verify: ssl.SSLContext | bool = verify_cert
         elif isinstance(verify_cert, str):
-            # Starting with version 0.28.0 of httpx, verify should be either a bool or an SSL Context.
             ssl_verify = ssl.create_default_context(cafile=verify_cert)
         else:
             ssl_verify = True
 
-        self.session = httpx.AsyncClient(timeout=http_timeout, verify=ssl_verify, proxy=proxy, auth=http_auth)
+        self.session = httpx2.AsyncClient(timeout=http_timeout, verify=ssl_verify, proxy=proxy, auth=http_auth)
 
         if token is not None:  # pragma: no cover  # no way to add tests for this with the current docker image
             self.session.headers['Authorization'] = f'token {token}'
 
-    def __debug_response(self, response: httpx.Response) -> None:
+    def __debug_response(self, response: httpx2.Response) -> None:
         """Output debug information for a given HTTP response."""
         response.request.read()
         self.logger.debug('### %s', datetime.datetime.now(tz=datetime.timezone.utc).isoformat())
@@ -1908,9 +1906,9 @@ class AsyncRt:
                 ) from exc
 
             return result
-        except httpx.ConnectError as exc:  # pragma: no cover
+        except httpx2.ConnectError as exc:  # pragma: no cover
             raise ConnectionError('Connection error', exc) from exc
-        except httpx.TransportError as exc:  # pragma: no cover
+        except httpx2.TransportError as exc:  # pragma: no cover
             raise ConnectionError('Transport error', exc) from exc
 
     async def __request_put(
@@ -1949,9 +1947,9 @@ class AsyncRt:
                 ) from exc
 
             return result
-        except httpx.ConnectError as exc:  # pragma: no cover
+        except httpx2.ConnectError as exc:  # pragma: no cover
             raise ConnectionError('Connection error', exc) from exc
-        except httpx.TransportError as exc:  # pragma: no cover
+        except httpx2.TransportError as exc:  # pragma: no cover
             raise ConnectionError('Transport error', exc) from exc
 
     async def __request_delete(self, selector: str) -> dict[str, str]:
@@ -1986,9 +1984,9 @@ class AsyncRt:
                 ) from exc
 
             return result
-        except httpx.ConnectError as exc:  # pragma: no cover
+        except httpx2.ConnectError as exc:  # pragma: no cover
             raise ConnectionError('Connection error', exc) from exc
-        except httpx.TransportError as exc:  # pragma: no cover
+        except httpx2.TransportError as exc:  # pragma: no cover
             raise ConnectionError('Transport error', exc) from exc
 
     async def __paged_request(
@@ -2071,13 +2069,13 @@ class AsyncRt:
                     except NotFoundError:
                         break
 
-        except httpx.ConnectError as exc:  # pragma: no cover
+        except httpx2.ConnectError as exc:  # pragma: no cover
             raise ConnectionError('Connection error', exc) from exc
-        except httpx.TransportError as exc:  # pragma: no cover
+        except httpx2.TransportError as exc:  # pragma: no cover
             raise ConnectionError('Transport error', exc) from exc
 
     @staticmethod
-    def __check_response(response: httpx.Response) -> None:
+    def __check_response(response: httpx2.Response) -> None:
         """Search general errors in server response and raise exceptions when found.
 
         :param response: Response from HTTP request.

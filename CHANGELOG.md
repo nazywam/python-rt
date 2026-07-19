@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v3.8.0], 2026-07-20
+### Changes
+- Switch from the seemingly unmaintained httpx library to the actively maintained fork, httpx2.
+
 ## [v3.7.1], 2026-07-02
 ### Added
 - Add a query_format parameter to sync/async get_attachments methods (#120 thanks @nazywam).

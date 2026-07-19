@@ -28,7 +28,7 @@ import base64
 import random
 import string
 
-import httpx
+import httpx2
 import pytest
 
 import rt.exceptions
@@ -53,7 +53,7 @@ async def test_get_user(async_rt_connection: rt.rest2.AsyncRt):
 @pytest.mark.asyncio
 async def test_invalid_api_url():
     with pytest.raises(ValueError):
-        rt.rest2.AsyncRt(url='https://example.com', http_auth=httpx.BasicAuth('dummy', 'dummy'))
+        rt.rest2.AsyncRt(url='https://example.com', http_auth=httpx2.BasicAuth('dummy', 'dummy'))
 
 
 @pytest.mark.asyncio

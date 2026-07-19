@@ -28,7 +28,7 @@ import base64
 import random
 import string
 
-import httpx
+import httpx2
 import pytest
 
 import rt.exceptions
@@ -51,7 +51,7 @@ def test_get_user(rt_connection: rt.rest2.Rt):
 
 def test_invalid_api_url():
     with pytest.raises(ValueError):
-        rt.rest2.Rt(url='https://example.com', http_auth=httpx.BasicAuth('dummy', 'dummy'))
+        rt.rest2.Rt(url='https://example.com', http_auth=httpx2.BasicAuth('dummy', 'dummy'))
 
 
 def test_ticket_operations(rt_connection: rt.rest2.Rt):
